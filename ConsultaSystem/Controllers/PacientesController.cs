@@ -79,8 +79,6 @@ namespace ConsultaSystem.Controllers
         }
 
         // POST: Pacientes/Edit/5
-        // Para proteger-se contra ataques de excesso de postagem, ative as propriedades específicas às quais deseja se associar. 
-        // Para obter mais detalhes, confira https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ID,Nome,CPF,DataNascimento,Sexo,Telefone,Email")] Paciente paciente)

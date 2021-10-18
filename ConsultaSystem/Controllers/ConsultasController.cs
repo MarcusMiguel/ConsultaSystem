@@ -123,7 +123,7 @@ namespace ConsultaSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ID, Horario, IDPaciente, IDTipoDeExame, IDExame, Protocolo")] Consulta consulta)
         {
-          
+            ModelState.Remove("Horario");
             if (ModelState.IsValid)
             {
                 if (consulta.Horario > DateTime.Now)

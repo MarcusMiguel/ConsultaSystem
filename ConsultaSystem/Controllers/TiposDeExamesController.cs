@@ -111,7 +111,7 @@ namespace ConsultaSystem.Controllers
             TipoDeExame tipoDeExame = db.TiposDeExames.Find(id);
             db.TiposDeExames.Remove(tipoDeExame);
             db.SaveChanges();
-            TempData["Message"] = "Tipo de deletado editado com sucesso!";
+            TempData["Message"] = "Tipo de Exame deletado com sucesso!";
             return RedirectToAction("Index");
         }
 

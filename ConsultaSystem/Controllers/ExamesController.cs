@@ -53,8 +53,6 @@ namespace ConsultaSystem.Controllers
         }
 
         // POST: Exames/Create
-        // Para proteger-se contra ataques de excesso de postagem, ative as propriedades específicas às quais deseja se associar. 
-        // Para obter mais detalhes, confira https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,Nome,Observacoes, IDTipoDeExame")] Exame exame)
@@ -95,20 +93,15 @@ namespace ConsultaSystem.Controllers
         }
 
         // POST: Exames/Edit/5
-        // Para proteger-se contra ataques de excesso de postagem, ative as propriedades específicas às quais deseja se associar. 
-        // Para obter mais detalhes, confira https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ID,Nome,Observacoes,IDTipoDeExame")] Exame exame)
         {
-
-
             var tipoDeExames = db.TiposDeExames.ToList();
             ViewData["IDTipoDeExame"] = new SelectList(tipoDeExames, "ID", "Nome", exame.IDTipoDeExame);
 
             if (ModelState.IsValid)
             {
-
                 db.Entry(exame).State = EntityState.Modified;
                 db.SaveChanges();
                 TempData["Message"] = "Exame editado com sucesso!";
