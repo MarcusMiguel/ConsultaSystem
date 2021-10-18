@@ -1,0 +1,82 @@
+﻿@model IEnumerable<ConsultaSystem.Entities.Exame>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Exames</h2>
+
+<p>
+    <a href="@Url.Action("Create")" class="btn btn-primary my-4">
+        <i class="fa fa-plus"></i>
+        Criar Exame
+    </a></p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Nome)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TipoDeExame)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Observacoes)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TipoDeExame.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Observacoes)
+            </td>
+            <td>
+                <a href="@Url.Action("Edit", null, new { id = item.ID })" class="btn btn-primary my-4 btn-lg">
+                    <i class="fa fa-edit"></i>
+                </a>
+                <a href="@Url.Action("Delete", null, new { id = item.ID })" class="btn btn-danger  my-4 btn-lg">
+                    <i class="fa fa-trash"></i>
+                </a>
+            </td>
+        </tr>
+    }
+
+</table>
+
+<span id="Message" style="display:none;">@TempData["Message"]</span>
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+
+
+                toastr.options = {
+                    "closeButton": true,
+                    "debug": false,
+                    "progressBar": true,
+                    "preventDuplicates": false,
+                    "positionClass": "toast-top-right",
+                    "showDuration": "400",
+                    "hideDuration": "1000",
+                    "timeOut": "7000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                }
+
+            var message = $('#Message').text();
+            if (message !== '') {
+                toastr.success(message);
+            }
+        })
+    </script>
+}
