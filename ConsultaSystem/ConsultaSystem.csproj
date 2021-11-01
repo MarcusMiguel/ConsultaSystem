@@ -141,9 +141,9 @@
     <Compile Include="Entities\Exame.cs" />
     <Compile Include="Entities\Paciente.cs" />
     <Compile Include="Entities\TipoDeExame.cs" />
-    <Compile Include="Migrations\202110131947244_init.cs" />
-    <Compile Include="Migrations\202110131947244_init.Designer.cs">
-      <DependentUpon>202110131947244_init.cs</DependentUpon>
+    <Compile Include="Migrations\202110291848497_init.cs" />
+    <Compile Include="Migrations\202110291848497_init.Designer.cs">
+      <DependentUpon>202110291848497_init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -160,7 +160,6 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Content\toastr.scss" />
@@ -172,6 +171,8 @@
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -181,6 +182,7 @@
     <Content Include="Scripts\moment-with-locales.min.js" />
     <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\moment.min.js" />
+    <Content Include="Scripts\site.js" />
     <Content Include="Scripts\toastr.js" />
     <Content Include="Scripts\toastr.min.js" />
     <Content Include="Web.config" />
@@ -196,29 +198,23 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Pacientes\Create.cshtml" />
-    <Content Include="Views\Pacientes\Delete.cshtml" />
-    <Content Include="Views\Pacientes\Details.cshtml" />
     <Content Include="Views\Pacientes\Edit.cshtml" />
     <Content Include="Views\Pacientes\Index.cshtml" />
     <Content Include="Views\Exames\Create.cshtml" />
-    <Content Include="Views\Exames\Delete.cshtml" />
-    <Content Include="Views\Exames\Details.cshtml" />
     <Content Include="Views\Exames\Edit.cshtml" />
     <Content Include="Views\Exames\Index.cshtml" />
     <Content Include="Views\Consultas\Create.cshtml" />
-    <Content Include="Views\Consultas\Delete.cshtml" />
-    <Content Include="Views\Consultas\Details.cshtml" />
     <Content Include="Views\Consultas\Edit.cshtml" />
     <Content Include="Views\Consultas\Index.cshtml" />
     <Content Include="Views\TiposDeExames\Create.cshtml" />
-    <Content Include="Views\TiposDeExames\Delete.cshtml" />
-    <Content Include="Views\TiposDeExames\Details.cshtml" />
     <Content Include="Views\TiposDeExames\Edit.cshtml" />
     <Content Include="Views\TiposDeExames\Index.cshtml" />
     <Content Include="Scripts\moment.min.js.map" />
     <Content Include="Scripts\moment-with-locales.min.js.map" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -233,8 +229,8 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202110131947244_init.resx">
-      <DependentUpon>202110131947244_init.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202110291848497_init.resx">
+      <DependentUpon>202110291848497_init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

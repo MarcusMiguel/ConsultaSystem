@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using ConsultaSystem.Data;
 using ConsultaSystem.Entities;
@@ -21,21 +19,6 @@ namespace ConsultaSystem.Controllers
             return View(db.Exames.ToList());
         }
 
-        // GET: Exames/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Exame exame = db.Exames.Find(id);
-            if (exame == null)
-            {
-                return HttpNotFound();
-            }
-            return View(exame);
-        }
-
         public JsonResult GetByTipo(int TipoId)
         {
             var exames = db.Exames.ToList().Where(o => o.IDTipoDeExame == TipoId);
@@ -49,7 +32,7 @@ namespace ConsultaSystem.Controllers
             var tipoDeExames = db.TiposDeExames.ToList();
             ViewData["IDTipoDeExame"] = new SelectList(tipoDeExames, "ID", "Nome");
 
-            return View();
+            return PartialView();
         }
 
         // POST: Exames/Create
@@ -66,9 +49,9 @@ namespace ConsultaSystem.Controllers
                 db.Exames.Add(exame);
                 db.SaveChanges();
                 TempData["Message"] = "Exame criado com sucesso!";
-                return RedirectToAction("Index");
+                return View("Create");
             }
-
+            TempData["InvalidModelState"] = "ModelState inválido";
             return View(exame);
         }
 
@@ -89,7 +72,7 @@ namespace ConsultaSystem.Controllers
             {
                 return HttpNotFound();
             }
-            return View(exame);
+            return PartialView(exame);
         }
 
         // POST: Exames/Edit/5
@@ -105,30 +88,15 @@ namespace ConsultaSystem.Controllers
                 db.Entry(exame).State = EntityState.Modified;
                 db.SaveChanges();
                 TempData["Message"] = "Exame editado com sucesso!";
-                return RedirectToAction("Index");
+                return View("Edit");
             }
+
+            TempData["InvalidModelState"] = "ModelState inválido";
             return View(exame);
         }
 
         // GET: Exames/Delete/5
         public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Exame exame = db.Exames.Find(id);
-            if (exame == null)
-            {
-                return HttpNotFound();
-            }
-            return View(exame);
-        }
-
-        // POST: Exames/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
         {
             Exame exame = db.Exames.Find(id);
             db.Exames.Remove(exame);

@@ -12,6 +12,6 @@
 - Bootstrap
 - Jquery
 - Toastr
-
+- SweetAlert
 
 

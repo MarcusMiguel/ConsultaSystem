@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using ConsultaSystem.Data;
 using ConsultaSystem.Entities;
@@ -21,21 +18,6 @@ namespace ConsultaSystem.Controllers
             return View(db.Consultas.ToList());
         }
 
-        // GET: Consultas/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Consulta consulta = db.Consultas.Find(id);
-            if (consulta == null)
-            {
-                return HttpNotFound();
-            }
-            return View(consulta);
-        }
-
         // GET: Consultas/Create
         public ActionResult Create()
         {
@@ -50,7 +32,7 @@ namespace ConsultaSystem.Controllers
 
             ViewData["IDExame"] = new SelectList(Enumerable.Empty<SelectListItem>());
 
-            return View();
+            return PartialView();
         }
 
         // POST: Consultas/Create
@@ -71,7 +53,15 @@ namespace ConsultaSystem.Controllers
                         db.Consultas.Add(consulta);
                         db.SaveChanges();
                         TempData["Message"] = "Consulta criada com sucesso!";
-                        return RedirectToAction("Index");
+                        var pacientes2 = db.Pacientes.ToList();
+                        if (pacientes2.Count() > 0)
+                        {
+                            ViewData["IDPaciente"] = new SelectList(pacientes2, "ID", "Nome");
+                        }
+                        var tipoDeExames2 = db.TiposDeExames.ToList();
+                        ViewData["IDTipoDeExame"] = new SelectList(tipoDeExames2, "ID", "Nome");
+                        ViewData["IDExame"] = new SelectList(Enumerable.Empty<SelectListItem>());
+                        return View("Create");
                     }
                     else
                     {
@@ -98,6 +88,7 @@ namespace ConsultaSystem.Controllers
             ViewData["IDTipoDeExame"] = new SelectList(tipoDeExames, "ID", "Nome");
 
             ViewData["IDExame"] = new SelectList(Enumerable.Empty<SelectListItem>());
+            TempData["InvalidModelState"] = "ModelState inválido";
 
             return View(consulta);
         }
@@ -124,6 +115,8 @@ namespace ConsultaSystem.Controllers
         public ActionResult Edit([Bind(Include = "ID, Horario, IDPaciente, IDTipoDeExame, IDExame, Protocolo")] Consulta consulta)
         {
             ModelState.Remove("Horario");
+            ModelState.Remove("IDTipoDeExame");
+
             if (ModelState.IsValid)
             {
                 if (consulta.Horario > DateTime.Now)
@@ -136,7 +129,7 @@ namespace ConsultaSystem.Controllers
                         consultaAlterada.Horario = consulta.Horario;
                         db.SaveChanges();
                         TempData["Message"] = "Consulta editada com sucesso!";
-                        return RedirectToAction("Index");
+                        return View("Edit");
                     }
                     else
                     {
@@ -148,29 +141,13 @@ namespace ConsultaSystem.Controllers
                     ModelState.AddModelError(string.Empty, "Escolha uma data no futuro.");
                 }
             }
+            TempData["InvalidModelState"] = "ModelState inválido";
+
             consulta = db.Consultas.Find(consulta.ID);
             return View(consulta);
         }
-
         // GET: Consultas/Delete/5
         public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Consulta consulta = db.Consultas.Find(id);
-            if (consulta == null)
-            {
-                return HttpNotFound();
-            }
-            return View(consulta);
-        }
-
-        // POST: Consultas/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
         {
             Consulta consulta = db.Consultas.Find(id);
             db.Consultas.Remove(consulta);
@@ -178,6 +155,7 @@ namespace ConsultaSystem.Controllers
             TempData["Message"] = "Consulta deletada com sucesso!";
             return RedirectToAction("Index");
         }
+
 
         protected override void Dispose(bool disposing)
         {

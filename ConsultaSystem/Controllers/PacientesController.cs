@@ -21,25 +21,10 @@ namespace ConsultaSystem.Controllers
             return View(db.Pacientes.ToList());
         }
 
-        // GET: Pacientes/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Paciente paciente = db.Pacientes.Find(id);
-            if (paciente == null)
-            {
-                return HttpNotFound();
-            }
-            return View(paciente);
-        }
-
         // GET: Pacientes/Create
         public ActionResult Create()
         {
-            return View();
+            return PartialView();
         }
 
         // POST: Pacientes/Create
@@ -55,10 +40,12 @@ namespace ConsultaSystem.Controllers
                     db.Pacientes.Add(paciente);
                     db.SaveChanges();
                     TempData["Message"] = "Paciente criado com sucesso!";
-                    return RedirectToAction("Index");
+                    return View("Create");
                 }
                 ModelState.AddModelError(string.Empty, "O CPF já está em uso.");
             }
+            TempData["InvalidModelState"] = "ModelState inválido";
+
 
             return View(paciente);
         }
@@ -88,7 +75,7 @@ namespace ConsultaSystem.Controllers
                 db.Entry(paciente).State = EntityState.Modified;
                 db.SaveChanges();
                 TempData["Message"] = "Paciente editado com sucesso!";
-                return RedirectToAction("Index");
+                return View("Edit");
             }
             return View(paciente);
         }

@@ -7,12 +7,12 @@
 <h2>Pacientes</h2>
 
 <p>
-    <a href="@Url.Action("Create")" class="btn btn-primary my-4">
+    <a class="btn btn-primary my-4 btnModal">
         <i class="fa fa-plus"></i>
         Criar Paciente
     </a>
 </p>
-<table class="table">
+<table class="table" id="mydiv">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Nome)
@@ -37,64 +37,115 @@
 
     @foreach (var item in Model)
     {
-<tr>
-    <td>
-        @Html.DisplayFor(modelItem => item.Nome)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.CPF)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.DataNascimento)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Sexo)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Telefone)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Email)
-    </td>
-    <td>
-        <a href="@Url.Action("Edit", null, new { id = item.ID })" class="btn btn-primary my-4 btn-lg">
-            <i class="fa fa-edit"></i>
-        </a>
-        <a href="@Url.Action("Delete", null, new { id = item.ID })" class="btn btn-danger  my-4 btn-lg">
-            <i class="fa fa-trash"></i>
-        </a>
-    </td>
-</tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CPF)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataNascimento)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Sexo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Telefone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                <a data-value="@item.ID" class="btn btn-primary my-4 btn-lg btnModal">
+                    <i class="fa fa-edit"></i>
+                </a>
+                <a onclick="deleteConfirmation(@item.ID)" class="btn btn-danger  my-4 btn-lg">
+                    <i class="fa fa-trash"></i>
+                </a>
+            </td>
+        </tr>
     }
 
 </table>
-
-
-<span id="Message" style="display:none;">@TempData["Message"]</span>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"></h5>
+            </div>
+            <div class="modal-body ">
+                <div id="teste"></div>
+            </div>
+        </div>
+    </div>
+</div>
 @section Scripts
 {
     <script>
+        function deleteConfirmation(id) {
+            swal({
+                title: "Tem certeza?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn-danger",
+                confirmButtonText: "Deletar",
+                cancelButtonText: "Cancelar",
+            },
+                function (willDelete) {
+                    if (willDelete) {
+                        $.ajax({
+                            url: '/Pacientes/Delete/' + id,
+                            success: function (msg) {
+                                $("#mydiv").load(location.href + " #mydiv>*", "")
+                                toastr.success("Operação realizada com sucesso.")
+                            }
+                        })
+                    }
+                })
+        }
+
         $(document).ready(function () {
-                toastr.options = {
-                    "closeButton": true,
-                    "debug": false,
-                    "progressBar": true,
-                    "preventDuplicates": false,
-                    "positionClass": "toast-top-right",
-                    "showDuration": "400",
-                    "hideDuration": "1000",
-                    "timeOut": "7000",
-                    "extendedTimeOut": "1000",
-                    "showEasing": "swing",
-                    "hideEasing": "linear",
-                    "showMethod": "fadeIn",
-                    "hideMethod": "fadeOut"
+            $('body').on('click', '.btnModal', function () {
+                var id = $(this).data("value")
+                if (id == null) {
+                    $('#myModal .modal-title').html("Criar Paciente")
+                    $("#teste").load("/Pacientes/Create/", function () {
+                        $('#myModal').modal("show")
+                    })
+                }
+                else {
+                    $('#myModal .modal-title').html("Editar")
+                    $("#teste").load("/Pacientes/Edit/" + id, function () {
+                        $('#myModal').modal("show")
+                    })
                 }
 
-            var message = $('#Message').text();
+                $("#form").removeData("validator")
+                $("#form").removeData("unobtrusiveValidation")
+                $.validator.unobtrusive.parse("#form")
+
+                setTimeout(function () {
+                    setupForm()
+                }, 500)
+            })
+        })
+
+        $(document).ajaxComplete(function () {
+            var message = $('#Message').text()
+
             if (message !== '') {
-                toastr.success(message);
+                $('#myModal .modal-body').html('')
+                $('#myModal .modal-title').html('')
+                $('#myModal').modal('hide')
+                $("#mydiv").load(location.href + " #mydiv>*", "")
+                $("#myModal").load(location.href + " #myModal>*", "")
+                toastr.success(message)
+            }
+            if ($('#InvalidModelState').text() != '') {
+                $('#InvalidModelState').text('')
             }
         })
+
     </script>
 }

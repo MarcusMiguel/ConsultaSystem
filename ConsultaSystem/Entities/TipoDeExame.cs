@@ -17,6 +17,7 @@ namespace ConsultaSystem.Entities
 
         [Required]
         [StringLength(256)]
+        [Display(Name = "Descrição")]
         public string Descricao { get; set; }
     }
 }

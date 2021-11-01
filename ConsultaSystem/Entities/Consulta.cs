@@ -13,6 +13,7 @@ namespace ConsultaSystem.Entities
         public int ID { get; set; }
 
         [Required]
+        [Display(Name = "Horário")]
         public DateTime Horario { get; set; }
 
         [Required]
@@ -28,6 +29,7 @@ namespace ConsultaSystem.Entities
         public int IDTipoDeExame { get; set; }
 
         [ForeignKey("IDTipoDeExame")]
+        [Display (Name = "Tipo de Exame")]
         public virtual TipoDeExame TipoDeExame { get; set; }
 
         [Required]

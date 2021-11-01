@@ -10,6 +10,7 @@ namespace ConsultaSystem.Entities
 
         [Required(ErrorMessage = "Campo obrigatório")]
         [StringLength(100)]
+        [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Use somente letras.")]
         public string Nome { get; set; }
 
         [Required(ErrorMessage = "Campo obrigatório")]
@@ -17,6 +18,7 @@ namespace ConsultaSystem.Entities
         public string CPF { get; set; }
 
         [Required(ErrorMessage = "Campo obrigatório")]
+        [Display(Name = "Data de Nascimento")]
         public DateTime DataNascimento { get; set; }
 
         [Required(ErrorMessage = "Campo obrigatório")]

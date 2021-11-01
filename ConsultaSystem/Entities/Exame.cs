@@ -16,13 +16,17 @@ namespace ConsultaSystem.Entities
         
         [Required]
         [StringLength(1000)]
+        [Display(Name = "Observações")]
+
         public string Observacoes { get; set; }
 
         [Required]
         public int IDTipoDeExame { get; set; }
 
         [ForeignKey("IDTipoDeExame")]
-        public  virtual TipoDeExame TipoDeExame { get; set; }
+        [Display(Name = "Tipo de Exame")]
+
+        public virtual TipoDeExame TipoDeExame { get; set; }
 
     }
 }

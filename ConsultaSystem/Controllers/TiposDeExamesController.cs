@@ -21,25 +21,10 @@ namespace ConsultaSystem.Controllers
             return View(db.TiposDeExames.ToList());
         }
 
-        // GET: TiposDeExames/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            TipoDeExame tipoDeExame = db.TiposDeExames.Find(id);
-            if (tipoDeExame == null)
-            {
-                return HttpNotFound();
-            }
-            return View(tipoDeExame);
-        }
-
         // GET: TiposDeExames/Create
         public ActionResult Create()
         {
-            return View();
+            return PartialView();
         }
 
         // POST: TiposDeExames/Create
@@ -52,7 +37,7 @@ namespace ConsultaSystem.Controllers
                 db.TiposDeExames.Add(tipoDeExame);
                 db.SaveChanges();
                 TempData["Message"] = "Tipo de exame criado com sucesso!";
-                return RedirectToAction("Index");
+                return View("Create");
             }
 
             return View(tipoDeExame);
@@ -83,8 +68,9 @@ namespace ConsultaSystem.Controllers
                 db.Entry(tipoDeExame).State = EntityState.Modified;
                 db.SaveChanges();
                 TempData["Message"] = "Tipo de exame editado com sucesso!";
-                return RedirectToAction("Index");
+                return View("Edit");
             }
+            TempData["InvalidModelState"] = "ModelState inválido";
             return View(tipoDeExame);
         }
 
