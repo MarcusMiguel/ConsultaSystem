@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
+using AutoMapper;
 using ConsultaSystem.Data;
 using ConsultaSystem.Entities;
+using ConsultaSystem.ViewModels;
 
 namespace ConsultaSystem.Controllers
 {
@@ -15,26 +14,34 @@ namespace ConsultaSystem.Controllers
     {
         private ConsultaSystemContext db = new ConsultaSystemContext();
 
-        // GET: TiposDeExames
+        private IMapper _tiposDeExamesDomainToViewModel;
+
+        private IMapper _tiposDeExamesViewModelToDomain;
+
+        public TiposDeExamesController()
+        {
+            _tiposDeExamesDomainToViewModel = new Mapper(new MapperConfiguration(cfg => cfg.CreateMap<TipoDeExame, TipoDeExameViewModel>()));
+            _tiposDeExamesViewModelToDomain = new Mapper(new MapperConfiguration(cfg => cfg.CreateMap<TipoDeExameViewModel, TipoDeExame>()));
+        }
         public ActionResult Index()
         {
-            return View(db.TiposDeExames.ToList());
+            IEnumerable<TipoDeExameViewModel> tiposDeExames = _tiposDeExamesDomainToViewModel.Map<IEnumerable<TipoDeExame>, IEnumerable<TipoDeExameViewModel>>(db.TiposDeExames.ToList());
+            return View(tiposDeExames);
         }
 
-        // GET: TiposDeExames/Create
         public ActionResult Create()
         {
             return PartialView();
         }
 
-        // POST: TiposDeExames/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Nome,Descricao")] TipoDeExame tipoDeExame)
+        public ActionResult Create([Bind(Include = "ID, Nome, Descricao")] TipoDeExameViewModel tipoDeExame)
         {
             if (ModelState.IsValid)
             {
-                db.TiposDeExames.Add(tipoDeExame);
+                TipoDeExame newTipoDeExames = _tiposDeExamesViewModelToDomain.Map<TipoDeExame>(tipoDeExame);
+                db.TiposDeExames.Add(newTipoDeExames);
                 db.SaveChanges();
                 TempData["Message"] = "Tipo de exame criado com sucesso!";
                 return View("Create");
@@ -43,7 +50,6 @@ namespace ConsultaSystem.Controllers
             return View(tipoDeExame);
         }
 
-        // GET: TiposDeExames/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -55,17 +61,18 @@ namespace ConsultaSystem.Controllers
             {
                 return HttpNotFound();
             }
-            return View(tipoDeExame);
+            TipoDeExameViewModel newTipoDeExame = _tiposDeExamesDomainToViewModel.Map<TipoDeExameViewModel>(tipoDeExame);
+            return View(newTipoDeExame);
         }
 
-        // POST: TiposDeExames/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Nome,Descricao")] TipoDeExame tipoDeExame)
+        public ActionResult Edit([Bind(Include = "ID, Nome, Descricao")] TipoDeExameViewModel tipoDeExame)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(tipoDeExame).State = EntityState.Modified;
+                TipoDeExame newTipoDeExame = _tiposDeExamesViewModelToDomain.Map<TipoDeExame>(tipoDeExame);
+                db.Entry(newTipoDeExame).State = EntityState.Modified;
                 db.SaveChanges();
                 TempData["Message"] = "Tipo de exame editado com sucesso!";
                 return View("Edit");
@@ -74,30 +81,11 @@ namespace ConsultaSystem.Controllers
             return View(tipoDeExame);
         }
 
-        // GET: TipoDeExames/Delete/5
         public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            TipoDeExame tipoDeExame = db.TiposDeExames.Find(id);
-            if (tipoDeExame == null)
-            {
-                return HttpNotFound();
-            }
-            return View(tipoDeExame);
-        }
-
-        // POST: TiposDeExames/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
         {
             TipoDeExame tipoDeExame = db.TiposDeExames.Find(id);
             db.TiposDeExames.Remove(tipoDeExame);
             db.SaveChanges();
-            TempData["Message"] = "Tipo de Exame deletado com sucesso!";
             return RedirectToAction("Index");
         }
 

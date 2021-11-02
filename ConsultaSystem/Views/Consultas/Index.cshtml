@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ConsultaSystem.Entities.Consulta>
+﻿@model IEnumerable<ConsultaSystem.ViewModels.ConsultaViewModel>
 
 @{
     ViewBag.Title = "Index";
@@ -96,7 +96,7 @@
                             url: '/Consultas/Delete/' + id,
                             success: function (msg) {
                                 $("#mydiv").load(location.href + " #mydiv>*", "")
-                                toastr.success("Operação realizada com sucesso.")
+                                toastr.success("Consulta deletada com sucesso.")
                             }
                         })
                     }
@@ -126,15 +126,14 @@
 
                 setTimeout(function () {
                     setupForm()
-                    $("#IDTipoDeExame").val(null)
                 }, 500)
             })
+         
         })
 
         $(document).ajaxComplete(function () {
             setupForm()
             if ($('#InvalidModelState').text() != '') {
-                $("#IDTipoDeExame").val(null)
                 $('#InvalidModelState').text('')
             }
         })

@@ -6,6 +6,9 @@ using System.Net;
 using System.Web.Mvc;
 using ConsultaSystem.Data;
 using ConsultaSystem.Entities;
+using AutoMapper;
+using ConsultaSystem.ViewModels;
+using System.Collections.Generic;
 
 namespace ConsultaSystem.Controllers
 {
@@ -13,40 +16,52 @@ namespace ConsultaSystem.Controllers
     {
         private ConsultaSystemContext db = new ConsultaSystemContext();
 
-        // GET: Exames
+        private IMapper _exameDomainToViewModel; 
+
+        private IMapper _exameViewModelToDomain;
+        
+        private IMapper _tipoDeExameDomainToViewModel;
+
+        public ExamesController()
+        {
+            _exameViewModelToDomain = new Mapper(new MapperConfiguration(cfg => cfg.CreateMap<ExameViewModel, Exame>()));
+            _exameDomainToViewModel = new Mapper(new MapperConfiguration(cfg => cfg.CreateMap<Exame, ExameViewModel>()));
+            _tipoDeExameDomainToViewModel = new Mapper(new MapperConfiguration(cfg => cfg.CreateMap<TipoDeExame, TipoDeExameViewModel>()));
+
+        }
         public ActionResult Index()
         {
-            return View(db.Exames.ToList());
+            IEnumerable<ExameViewModel> exames = _exameDomainToViewModel.Map<IEnumerable<Exame>, IEnumerable<ExameViewModel>>(db.Exames.ToList());
+            return View(exames);
         }
 
         public JsonResult GetByTipo(int TipoId)
         {
             var exames = db.Exames.ToList().Where(o => o.IDTipoDeExame == TipoId);
-            Console.WriteLine(exames);
-            return Json(exames, JsonRequestBehavior.AllowGet);
+            IEnumerable<ExameViewModel> newExames = _exameDomainToViewModel.Map<IEnumerable<Exame>, IEnumerable<ExameViewModel>>(exames);
+
+            return Json(newExames, JsonRequestBehavior.AllowGet);
         }
 
-        // GET: Exames/Create
         public ActionResult Create()
         {
-            var tipoDeExames = db.TiposDeExames.ToList();
-            ViewData["IDTipoDeExame"] = new SelectList(tipoDeExames, "ID", "Nome");
+            IEnumerable<TipoDeExameViewModel> tiposDeExames = _tipoDeExameDomainToViewModel.Map<IEnumerable<TipoDeExame>, IEnumerable<TipoDeExameViewModel>>(db.TiposDeExames.ToList());
+            ViewData["IDTipoDeExame"] = new SelectList(tiposDeExames, "ID", "Nome");
 
             return PartialView();
         }
 
-        // POST: Exames/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Nome,Observacoes, IDTipoDeExame")] Exame exame)
+        public ActionResult Create([Bind(Include = "ID, Nome, Observacoes, IDTipoDeExame")] ExameViewModel exame)
         {
-
-            var tipoDeExames = db.TiposDeExames.ToList();
-            ViewData["IDTipoDeExame"] = new SelectList(tipoDeExames, "ID", "Nome", exame.IDTipoDeExame);
+            IEnumerable<TipoDeExameViewModel> newTiposDeExames = _tipoDeExameDomainToViewModel.Map<IEnumerable<TipoDeExame>, IEnumerable<TipoDeExameViewModel>>(db.TiposDeExames.ToList());
+            ViewData["IDTipoDeExame"] = new SelectList(newTiposDeExames, "ID", "Nome", exame.IDTipoDeExame);
 
             if (ModelState.IsValid)
             {
-                db.Exames.Add(exame);
+                Exame newExame = _exameViewModelToDomain.Map<Exame>(exame);
+                db.Exames.Add(newExame);
                 db.SaveChanges();
                 TempData["Message"] = "Exame criado com sucesso!";
                 return View("Create");
@@ -55,37 +70,35 @@ namespace ConsultaSystem.Controllers
             return View(exame);
         }
 
-        // GET: Exames/Edit/5
         public ActionResult Edit(int? id)
         {
-
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
             Exame exame = db.Exames.Find(id);
-
-            var tipoDeExames = db.TiposDeExames.ToList();
-            ViewData["IDTipoDeExame"] = new SelectList(tipoDeExames, "ID", "Nome", exame.IDTipoDeExame);
             if (exame == null)
             {
                 return HttpNotFound();
             }
-            return PartialView(exame);
+            IEnumerable<TipoDeExameViewModel> newTiposDeExames = _tipoDeExameDomainToViewModel.Map<IEnumerable<TipoDeExame>, IEnumerable<TipoDeExameViewModel>>(db.TiposDeExames.ToList());
+            ViewData["IDTipoDeExame"] = new SelectList(newTiposDeExames, "ID", "Nome", exame.IDTipoDeExame);
+            ExameViewModel newExame = _exameDomainToViewModel.Map<ExameViewModel>(exame);
+            return PartialView(newExame);
         }
 
-        // POST: Exames/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Nome,Observacoes,IDTipoDeExame")] Exame exame)
+        public ActionResult Edit([Bind(Include = "ID, Nome, Observacoes, IDTipoDeExame")] ExameViewModel exame)
         {
-            var tipoDeExames = db.TiposDeExames.ToList();
-            ViewData["IDTipoDeExame"] = new SelectList(tipoDeExames, "ID", "Nome", exame.IDTipoDeExame);
+            IEnumerable<TipoDeExameViewModel> newTiposDeExames = _tipoDeExameDomainToViewModel.Map<IEnumerable<TipoDeExame>, IEnumerable<TipoDeExameViewModel>>(db.TiposDeExames.ToList());
+            ViewData["IDTipoDeExame"] = new SelectList(newTiposDeExames, "ID", "Nome", exame.IDTipoDeExame);
 
             if (ModelState.IsValid)
             {
-                db.Entry(exame).State = EntityState.Modified;
+                Exame newExame = _exameViewModelToDomain.Map<Exame>(exame);
+                db.Entry(newExame).State = EntityState.Modified;
                 db.SaveChanges();
                 TempData["Message"] = "Exame editado com sucesso!";
                 return View("Edit");
@@ -95,13 +108,11 @@ namespace ConsultaSystem.Controllers
             return View(exame);
         }
 
-        // GET: Exames/Delete/5
         public ActionResult Delete(int? id)
         {
             Exame exame = db.Exames.Find(id);
             db.Exames.Remove(exame);
             db.SaveChanges();
-            TempData["Message"] = "Exame deletado com sucesso!";
             return RedirectToAction("Index");
         }
 

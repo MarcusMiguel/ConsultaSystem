@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ConsultaSystem.Entities.Exame>
+﻿@model IEnumerable < ConsultaSystem.ViewModels.ExameViewModel>
 
 @{
     ViewBag.Title = "Index";
@@ -12,7 +12,7 @@
         Criar Exame
     </a>
 </p>
-<table class="table"  id="mydiv">
+<table class="table" id="mydiv">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Nome)
@@ -39,7 +39,7 @@
                 @Html.DisplayFor(modelItem => item.Observacoes)
             </td>
             <td>
-                <a data-value="@item.ID"  class="btn btn-primary my-4 btn-lg btnModal">
+                <a data-value="@item.ID" class="btn btn-primary my-4 btn-lg btnModal">
                     <i class="fa fa-edit"></i>
                 </a>
                 <a onclick="deleteConfirmation(@item.ID)" class="btn btn-danger  my-4 btn-lg">

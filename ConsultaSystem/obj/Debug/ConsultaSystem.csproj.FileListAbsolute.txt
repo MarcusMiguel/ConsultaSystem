@@ -90,3 +90,5 @@ C:\Users\marcu\source\repos\ConsultaSystem\ConsultaSystem\bin\EntityFramework.xm
 C:\Users\marcu\source\repos\ConsultaSystem\ConsultaSystem\bin\EntityFramework.SqlServer.xml
 C:\Users\marcu\source\repos\ConsultaSystem\ConsultaSystem\obj\Debug\ConsultaSystem.Migrations.init.resources
 C:\Users\marcu\source\repos\ConsultaSystem\ConsultaSystem\obj\Debug\ConsultaSystem.csproj.GenerateResource.cache
+C:\Users\marcu\source\repos\ConsultaSystem\ConsultaSystem\bin\AutoMapper.dll
+C:\Users\marcu\source\repos\ConsultaSystem\ConsultaSystem\bin\AutoMapper.xml

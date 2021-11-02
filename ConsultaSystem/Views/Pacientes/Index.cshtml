@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ConsultaSystem.Entities.Paciente>
+﻿@model IEnumerable<ConsultaSystem.ViewModels.PacienteViewModel>
 
 @{
     ViewBag.Title = "Index";
@@ -7,7 +7,7 @@
 <h2>Pacientes</h2>
 
 <p>
-    <a class="btn btn-primary my-4 btnModal">
+    <a class="btn btn-primary my-4 btnModal" id="createButton">
         <i class="fa fa-plus"></i>
         Criar Paciente
     </a>
@@ -80,6 +80,8 @@
         </div>
     </div>
 </div>
+<span id="ShowModal" style="display:none;">@TempData["ShowModal"]</span>
+
 @section Scripts
 {
     <script>
@@ -125,10 +127,11 @@
                 $("#form").removeData("unobtrusiveValidation")
                 $.validator.unobtrusive.parse("#form")
 
-                setTimeout(function () {
-                    setupForm()
-                }, 500)
             })
+            if ($('#ShowModal').text() == "ShowModal") {
+                $("#createButton").click()
+            }
+
         })
 
         $(document).ajaxComplete(function () {
@@ -146,6 +149,7 @@
                 $('#InvalidModelState').text('')
             }
         })
+
 
     </script>
 }
