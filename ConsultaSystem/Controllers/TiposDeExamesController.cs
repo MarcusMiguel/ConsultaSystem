@@ -77,7 +77,6 @@ namespace ConsultaSystem.Controllers
                 TempData["Message"] = "Tipo de exame editado com sucesso!";
                 return View("Edit");
             }
-            TempData["InvalidModelState"] = "ModelState inválido";
             return View(tipoDeExame);
         }
 

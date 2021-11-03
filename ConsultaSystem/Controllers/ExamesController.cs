@@ -66,7 +66,6 @@ namespace ConsultaSystem.Controllers
                 TempData["Message"] = "Exame criado com sucesso!";
                 return View("Create");
             }
-            TempData["InvalidModelState"] = "ModelState inválido";
             return View(exame);
         }
 
@@ -104,7 +103,6 @@ namespace ConsultaSystem.Controllers
                 return View("Edit");
             }
 
-            TempData["InvalidModelState"] = "ModelState inválido";
             return View(exame);
         }
 

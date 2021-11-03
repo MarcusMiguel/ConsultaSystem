@@ -58,7 +58,6 @@ namespace ConsultaSystem.Controllers
                 }
                 ModelState.AddModelError(string.Empty, "O CPF já está em uso.");
             }
-            TempData["InvalidModelState"] = "ModelState inválido";
             return View(paciente);
         }
 

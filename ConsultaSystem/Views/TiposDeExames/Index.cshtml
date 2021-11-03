@@ -22,6 +22,21 @@
         <th></th>
     </tr>
 
+    <tr class="hide empty-table">
+        <td>
+        </td>
+        <td>
+        </td>
+        <td>
+        </td>
+        <td>
+        </td>
+        <td>
+        </td>
+        <td>
+        </td>
+    </tr>
+    
     @foreach (var item in Model)
     {
         <tr>
@@ -35,7 +50,7 @@
                 <a data-value="@item.ID" class="btn btn-primary my-4 btn-lg btnModal">
                     <i class="fa fa-edit"></i>
                 </a>
-                <a onclick="deleteConfirmation(@item.ID)" class="btn btn-danger  my-4 btn-lg">
+                <a onclick="deleteConfirmation(@item.ID, '/TiposDeExames/Delete/', 'Tipo de exame deletado com sucesso.')" class="btn btn-danger  my-4 btn-lg">
                     <i class="fa fa-trash"></i>
                 </a>
             </td>
@@ -44,6 +59,7 @@
 
 </table>
 
+<div class="empty-table-text hide">Não há tipos de exames cadastrados.</div>
 
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
@@ -61,67 +77,13 @@
 @section Scripts
 {
     <script>
-        function deleteConfirmation(id) {
-            swal({
-                title: "Tem certeza?",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonClass: "btn-danger",
-                confirmButtonText: "Deletar",
-                cancelButtonText: "Cancelar",
-            },
-                function (willDelete) {
-                    if (willDelete) {
-                        $.ajax({
-                            url: '/TiposDeExames/Delete/' + id,
-                            success: function (msg) {
-                                $("#mydiv").load(location.href + " #mydiv>*", "")
-                                toastr.success("Operação realizada com sucesso.")
-                            }
-                        })
-                    }
-                })
-        }
 
         $(document).ready(function () {
-
-            $('body').on('click', '.btnModal', function () {
-                var id = $(this).data("value")
-                if (id == null) {
-                    $('#myModal .modal-title').html("Criar Tipo de Exame")
-                    $("#teste").load("/TiposDeExames/Create/", function () {
-                        $('#myModal').modal("show")
-                    })
-                }
-                else {
-                    $('#myModal .modal-title').html("Editar Tipo De Exame")
-                    $("#teste").load("/TiposDeExames/Edit/" + id, function () {
-                        $('#myModal').modal("show")
-                    })
-                }
-
-                $("#form").removeData("validator")
-                $("#form").removeData("unobtrusiveValidation")
-                $.validator.unobtrusive.parse("#form")
-
-            })
+            handleBtnModalClick('/TiposDeExames/Create/', '/TiposDeExames/Edit/')
         })
 
         $(document).ajaxComplete(function () {
-            var message = $('#Message').text()
-
-            if (message !== '') {
-                $('#myModal .modal-body').html('')
-                $('#myModal .modal-title').html('')
-                $('#myModal').modal('hide')
-                $("#mydiv").load(location.href + " #mydiv>*", "")
-                $("#myModal").load(location.href + " #myModal>*", "")
-                toastr.success(message)
-            }
-
-            if ($('#InvalidModelState').text() != '') {
-                $('#InvalidModelState').text('')
-            }
+            handleSuccess()
         })
 
     </script>

@@ -55,7 +55,7 @@ namespace ConsultaSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID, Horario, IDPaciente, IDTipoDeExame, IDExame")] ConsultaViewModel consulta)
         {
-            if (ModelState.IsValid && (consulta.IDTipoDeExame != 0))
+            if (ModelState.IsValid && (consulta.IDTipoDeExame != 0) && (consulta.IDExame != 0))
             {
                 if (consulta.Horario > DateTime.Now)
                 {
@@ -101,7 +101,6 @@ namespace ConsultaSystem.Controllers
 
             ViewData["IDTipoDeExame"] = new SelectList(db.TiposDeExames.ToList(), "ID", "Nome");
             ViewData["IDExame"] = new SelectList(Enumerable.Empty<SelectListItem>());
-            TempData["InvalidModelState"] = "ModelState inválido";
 
             return View(consulta);
         }
@@ -150,8 +149,9 @@ namespace ConsultaSystem.Controllers
                     ModelState.AddModelError(string.Empty, "Escolha uma data no futuro.");
                 }
             }
-            TempData["InvalidModelState"] = "ModelState inválido";
-            return View(consulta);
+            Consulta consulta2 = db.Consultas.Find(consulta.ID);
+            ConsultaViewModel newconsulta = _consultaDomainToViewModel.Map<ConsultaViewModel>(consulta2);
+            return View(newconsulta);
         }
 
         public ActionResult Delete(int? id)
