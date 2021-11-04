@@ -102,10 +102,8 @@
 
         $(document).ajaxComplete(function () {
             handleSuccess()
-            setTimeout(function () {
                 setupForm()
-            }, 500)
-            if ($(".validation-summary-errors ul").length > 0
+                if ($(".validation-summary-errors ul").length > 0
                 && $("#IDExame option").length == 0) {
                 $("#IDTipoDeExame").val("")
             }
