@@ -1,5 +1,5 @@
 # ConsultaSystem
-![](/ConsultaSystem/Images/consultasystem.gif)
+![](/ConsultaSystem.MVC/Images/consultasystem.gif)
 
 ## Sobre
 ##### Aplicação .Net MVC com as seguintes funcionalidades:
