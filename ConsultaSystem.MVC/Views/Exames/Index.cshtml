@@ -1,0 +1,104 @@
+﻿@model IEnumerable<ConsultaSystem.MVC.ViewModels.ExameViewModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Exames</h2>
+
+<p>
+    <a class="btn btn-primary my-4 btnModal">
+        <i class="fa fa-plus"></i>
+        Criar Exame
+    </a>
+</p>
+<table class="table" id="mydiv">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Nome)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TipoDeExame)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Observacoes)
+        </th>
+        <th></th>
+    </tr>
+
+    <tr class="hide empty-table">
+        <td>
+        </td>
+        <td>
+        </td>
+        <td>
+        </td>
+        <td>
+        </td>
+        <td>
+        </td>
+        <td>
+        </td>
+    </tr>
+
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TipoDeExame.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Observacoes)
+            </td>
+            <td>
+                <a data-value="@item.ID" class="btn btn-primary my-4 btn-lg btnModal">
+                    <i class="fa fa-edit"></i>
+                </a>
+                <a onclick="deleteConfirmation(@item.ID, '/Exames/Delete/', 'Exame deletado com sucesso.')" class="btn btn-danger  my-4 btn-lg">
+                    <i class="fa fa-trash"></i>
+                </a>
+            </td>
+        </tr>
+    }
+
+</table>
+<div class="empty-table-text hide">Não há exames cadastrados.</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"></h5>
+            </div>
+            <div class="modal-body ">
+                <div id="teste"></div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            handleBtnModalClick('/Exames/Create/', '/Exames/Edit/')
+        })
+
+        $(document).ajaxComplete(function () {
+            setupForm()
+            handleSuccess()
+        })
+
+        function setupForm() {
+            $("#IDPaciente").chosen({
+                width: '50%',
+                no_results_text: "Sem resultados para",
+                placeholder_text_single: "Selecione uma opção",
+                placeholder_text_multiple: "Selecione as opções"
+            })
+        }
+    </script>
+}

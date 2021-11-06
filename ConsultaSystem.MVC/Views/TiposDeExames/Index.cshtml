@@ -1,0 +1,88 @@
+﻿@model IEnumerable<ConsultaSystem.MVC.ViewModels.TipoDeExameViewModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Tipos de Exames</h2>
+<p>
+    <a class="btn btn-primary my-4 btnModal">
+        <i class="fa fa-plus"></i>
+        Criar Tipo de Exame
+    </a>
+</p>
+<table class="table" id="mydiv">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Nome)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Descricao)
+        </th>
+        <th></th>
+    </tr>
+
+    <tr class="hide empty-table">
+        <td>
+        </td>
+        <td>
+        </td>
+        <td>
+        </td>
+        <td>
+        </td>
+        <td>
+        </td>
+        <td>
+        </td>
+    </tr>
+    
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Descricao)
+            </td>
+            <td>
+                <a data-value="@item.ID" class="btn btn-primary my-4 btn-lg btnModal">
+                    <i class="fa fa-edit"></i>
+                </a>
+                <a onclick="deleteConfirmation(@item.ID, '/TiposDeExames/Delete/', 'Tipo de exame deletado com sucesso.')" class="btn btn-danger  my-4 btn-lg">
+                    <i class="fa fa-trash"></i>
+                </a>
+            </td>
+        </tr>
+    }
+
+</table>
+
+<div class="empty-table-text hide">Não há tipos de exames cadastrados.</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"></h5>
+            </div>
+            <div class="modal-body ">
+                <div id="teste"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            handleBtnModalClick('/TiposDeExames/Create/', '/TiposDeExames/Edit/')
+        })
+
+        $(document).ajaxComplete(function () {
+            handleSuccess()
+        })
+    </script>
+}

@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31205.134
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsultaSystem", "ConsultaSystem\ConsultaSystem.csproj", "{919293CD-69C8-4954-B4EB-C3867A58C0A5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsultaSystem.Domain", "ConsultaSystem.Domain\ConsultaSystem.Domain.csproj", "{7584F61B-F2C0-4E0C-9EDE-5E476D429308}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsultaSystem.Infra", "ConsultaSystem.Infra\ConsultaSystem.Infra.csproj", "{42E5539E-7CED-4B87-854B-75FB31E92577}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsultaSystem.MVC", "ConsultaSystem.MVC\ConsultaSystem.MVC.csproj", "{919293CD-69C8-4954-B4EB-C3867A58C0A5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,6 +15,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7584F61B-F2C0-4E0C-9EDE-5E476D429308}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7584F61B-F2C0-4E0C-9EDE-5E476D429308}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7584F61B-F2C0-4E0C-9EDE-5E476D429308}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7584F61B-F2C0-4E0C-9EDE-5E476D429308}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42E5539E-7CED-4B87-854B-75FB31E92577}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42E5539E-7CED-4B87-854B-75FB31E92577}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42E5539E-7CED-4B87-854B-75FB31E92577}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42E5539E-7CED-4B87-854B-75FB31E92577}.Release|Any CPU.Build.0 = Release|Any CPU
 		{919293CD-69C8-4954-B4EB-C3867A58C0A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{919293CD-69C8-4954-B4EB-C3867A58C0A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{919293CD-69C8-4954-B4EB-C3867A58C0A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
