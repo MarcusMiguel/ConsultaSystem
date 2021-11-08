@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
+using ConsultaSystem.Application.UseCases;
 using ConsultaSystem.Domain.Entities;
-using ConsultaSystem.Domain.Interfaces.Services;
 using ConsultaSystem.MVC.ViewModels;
+using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,36 +12,29 @@ namespace ConsultaSystem.MVC.Controllers
 {
     public class ConsultasController : Controller
     {
-        private IMapper _consultaViewModelToDomain = new Mapper(new MapperConfiguration(cfg => cfg.CreateMap<ConsultaViewModel, Consulta>()));
-        private IMapper _consultaDomainToViewModel = new Mapper(new MapperConfiguration(cfg => cfg.CreateMap<Consulta, ConsultaViewModel>()));
-        private IMapper _pacienteDomainToViewModel = new Mapper(new MapperConfiguration(cfg => cfg.CreateMap<Paciente, PacienteViewModel>()));
-        private IMapper _tipoDeExameDomainToViewModel = new Mapper(new MapperConfiguration(cfg => cfg.CreateMap<TipoDeExame, TipoDeExameViewModel>()));
-        private IConsultaService _consultaService;
-        private IPacienteService _pacienteService;
-        private ITipoDeExameService _tipoDeExameService;
-
-        public ConsultasController(IConsultaService consultaService,
-                                    IPacienteService pacienteService,
-                                    ITipoDeExameService tipoDeExameService)
+        private IMediator _mediator;
+        private IMapper _mapper;
+        public ConsultasController(IMediator mediator, IMapper mapper)
         {
-            _consultaService = consultaService;
-            _pacienteService = pacienteService;
-            _tipoDeExameService = tipoDeExameService;
+            _mediator = mediator;
+            _mapper = mapper;
         }
         public ActionResult Index()
         {
-            var consultas = _consultaService.GetAll();
-            IEnumerable<ConsultaViewModel> newConsultas = _consultaDomainToViewModel.Map<IEnumerable<Consulta> , IEnumerable<ConsultaViewModel>>(consultas);
+            var consultas = _mediator.Send(new GetAllConsultas()).Result;
+            IEnumerable<ConsultaViewModel> newConsultas = _mapper.Map<IEnumerable<Consulta> , IEnumerable<ConsultaViewModel>>(consultas);
             return View(newConsultas);
         }
         
         public ActionResult Create()
         {
-            IEnumerable<PacienteViewModel> pacientes = _pacienteDomainToViewModel.Map<IEnumerable<Paciente>, IEnumerable<PacienteViewModel>>(_pacienteService.GetAll());
-            ViewData["IDPaciente"] = new SelectList(pacientes, "ID", "Nome");
+            var pacientes = _mediator.Send(new GetAllPacientes()).Result;
+            var newpacientes = _mapper.Map<IEnumerable<Paciente>, IEnumerable<PacienteViewModel>>(pacientes);
+            ViewData["IDPaciente"] = new SelectList(newpacientes, "ID", "Nome");
 
-            IEnumerable<TipoDeExameViewModel> tiposDeExames = _tipoDeExameDomainToViewModel.Map<IEnumerable<TipoDeExame>, IEnumerable<TipoDeExameViewModel>>(_tipoDeExameService.GetAll());
-            ViewData["IDTipoDeExame"] = new SelectList(tiposDeExames, "ID", "Nome", 0);
+            var tiposDeExames = _mediator.Send(new GetAllTiposDeExames()).Result;
+            var newTiposDeExames = _mapper.Map<IEnumerable<TipoDeExame>, IEnumerable<TipoDeExameViewModel>>(tiposDeExames);
+            ViewData["IDTipoDeExame"] = new SelectList(newTiposDeExames, "ID", "Nome", 0);
 
             ViewData["IDExame"] = new SelectList(Enumerable.Empty<SelectListItem>());
 
@@ -55,16 +49,13 @@ namespace ConsultaSystem.MVC.Controllers
             {
                 if (consulta.Horario > DateTime.Now)
                 {
-                    if (_consultaService.HorarioIsAvaliable(consulta.Horario))
+                    var result = _mediator.Send(new HorarioIsAvailable(consulta.Horario)).Result;
+                    if (result)
                     {
-                        Consulta newConsulta = _consultaViewModelToDomain.Map<Consulta>(consulta);
+                        Consulta newConsulta = _mapper.Map<Consulta>(consulta);
                         newConsulta.Protocolo = DateTime.Now.Ticks.ToString();
-                        _consultaService.Add(newConsulta);
+                        _mediator.Send(new AddConsulta(newConsulta));
                         TempData["Message"] = "Consulta criada com sucesso!";
-
-                        ViewData["IDPaciente"] = new SelectList(_tipoDeExameService.GetAll(), "ID", "Nome");
-                        ViewData["IDTipoDeExame"] = new SelectList(_tipoDeExameService.GetAll(), "ID", "Nome");
-                        ViewData["IDExame"] = new SelectList(Enumerable.Empty<SelectListItem>());
 
                         return View("Create");
                     }
@@ -83,13 +74,14 @@ namespace ConsultaSystem.MVC.Controllers
                 ModelState.AddModelError(string.Empty, "Alguns campos são inválidos.");
             }
 
-            var pacientes = _pacienteService.GetAll();
-            if (pacientes.Count() > 0)
-            {
-                ViewData["IDPaciente"] = new SelectList(pacientes, "ID", "Nome");
-            }
+            var pacientes = _mediator.Send(new GetAllPacientes()).Result;
+            var newpacientes = _mapper.Map<IEnumerable<Paciente>, IEnumerable<PacienteViewModel>>(pacientes);
+            ViewData["IDPaciente"] = new SelectList(newpacientes, "ID", "Nome");
 
-            ViewData["IDTipoDeExame"] = new SelectList(_tipoDeExameService.GetAll(), "ID", "Nome");
+            var tiposDeExames = _mediator.Send(new GetAllTiposDeExames()).Result;
+            var newTiposDeExames = _mapper.Map<IEnumerable<TipoDeExame>, IEnumerable<TipoDeExameViewModel>>(tiposDeExames);
+            ViewData["IDTipoDeExame"] = new SelectList(newTiposDeExames, "ID", "Nome", 0);
+
             ViewData["IDExame"] = new SelectList(Enumerable.Empty<SelectListItem>());
 
             return View(consulta);
@@ -97,12 +89,12 @@ namespace ConsultaSystem.MVC.Controllers
 
         public ActionResult Edit(int id)
         {
-            Consulta consulta = _consultaService.GetById(id);
+            Consulta consulta = _mediator.Send(new GetConsultaById(id)).Result;
             if (consulta == null)
             {
                 return HttpNotFound();
             }
-            ConsultaViewModel newConsulta = _consultaDomainToViewModel.Map<ConsultaViewModel>(consulta);
+            ConsultaViewModel newConsulta = _mapper.Map<ConsultaViewModel>(consulta);
             return View(newConsulta);
         }
 
@@ -114,12 +106,13 @@ namespace ConsultaSystem.MVC.Controllers
             {
                 if (consulta.Horario > DateTime.Now)
                 {
-                    if (_consultaService.HorarioIsAvaliable(consulta.Horario))
+                    var result = _mediator.Send(new HorarioIsAvailable(consulta.Horario)).Result;
+                    if (!result) 
                     {
-                        Consulta consultaAlterada = _consultaService.GetById(consulta.ID);
+                        Consulta consultaAlterada = _mediator.Send(new GetConsultaById(consulta.ID)).Result;
                         consultaAlterada.Protocolo = DateTime.Now.Ticks.ToString();
                         consultaAlterada.Horario = consulta.Horario;
-                        _consultaService.Update(consultaAlterada);
+                        _mediator.Send(new UpdateConsulta(consultaAlterada));
                         TempData["Message"] = "Consulta editada com sucesso!";
                         return View("Edit");
                     }
@@ -133,15 +126,14 @@ namespace ConsultaSystem.MVC.Controllers
                     ModelState.AddModelError(string.Empty, "Escolha uma data no futuro.");
                 }
             }
-            Consulta consulta2 = _consultaService.GetById(consulta.ID);
-            ConsultaViewModel newconsulta = _consultaDomainToViewModel.Map<ConsultaViewModel>(consulta2);
+            Consulta consulta2 = _mediator.Send(new GetConsultaById(consulta.ID)).Result;
+            ConsultaViewModel newconsulta = _mapper.Map<ConsultaViewModel>(consulta2);
             return View(newconsulta);
         }
 
         public ActionResult Delete(int id)
         {
-            Consulta consulta = _consultaService.GetById(id);
-            _consultaService.Remove(consulta);
+            _mediator.Send(new RemoveConsulta(id));
             return RedirectToAction("Index");
         }
     }

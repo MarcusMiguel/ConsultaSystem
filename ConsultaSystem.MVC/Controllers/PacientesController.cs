@@ -1,48 +1,54 @@
 ﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using AutoMapper;
+using ConsultaSystem.Application.UseCases;
 using ConsultaSystem.Domain.Entities;
-using ConsultaSystem.Domain.Interfaces.Services;
 using ConsultaSystem.MVC.ViewModels;
+using MediatR;
 
 namespace ConsultaSystem.MVC.Controllers
 {
     public class PacientesController : Controller
     {
-        private IMapper _pacienteDomainToViewModel =  new Mapper(new MapperConfiguration(cfg => cfg.CreateMap<Paciente, PacienteViewModel>()));
-        private IMapper _pacienteViewModelToDomain = new Mapper(new MapperConfiguration(cfg => cfg.CreateMap<PacienteViewModel, Paciente>()));
-        private IPacienteService _pacienteService;
-        public PacientesController(IPacienteService pacienteService)
+        private IMediator _mediator;
+        private IMapper _mapper;
+        public PacientesController( IMediator mediator, 
+                                    IMapper mapper)
         {
-            _pacienteService = pacienteService;
+            _mediator = mediator;
+            _mapper = mapper;
         }
         public ActionResult Index()
         {
-            IEnumerable<PacienteViewModel> pacientes = _pacienteDomainToViewModel.Map<IEnumerable<Paciente>, IEnumerable<PacienteViewModel>>(_pacienteService.GetAll());
+            var result = _mediator.Send(new GetAllPacientes());
+            IEnumerable<PacienteViewModel> pacientes = _mapper.Map<IEnumerable<Paciente>, IEnumerable<PacienteViewModel>>(result.Result);
+           
             return View(pacientes);
         }
         public ActionResult RedirectToCreate()
         {
-            TempData["ShowModal"] = "ShowModal";
-            IEnumerable<PacienteViewModel> pacientes = _pacienteDomainToViewModel.Map<IEnumerable<Paciente>, IEnumerable<PacienteViewModel>>(_pacienteService.GetAll());
-            return RedirectToAction("Index", pacientes);
+            // Will open the create modal
+            TempData["ShowModal"] = "ShowModal"; 
+            
+            return RedirectToAction("Index");
         }
 
         public ActionResult Create()
         {
             return PartialView();
         }
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID, Nome, CPF, DataNascimento, Sexo, Telefone, Email")] PacienteViewModel paciente)
         {
             if (ModelState.IsValid)
             {
-                if (!_pacienteService.ExistsCPF(paciente.CPF))
+                var result = _mediator.Send(new ExistsCPF(paciente.CPF)).Result;
+                if (!result)
                 {
-                    Paciente newPaciente = _pacienteViewModelToDomain.Map<Paciente>(paciente);
-                    _pacienteService.Add(newPaciente);
+                    Paciente newPaciente = _mapper.Map<Paciente>(paciente);
+                    _mediator.Send(new AddPaciente(newPaciente));
                     TempData["Message"] = "Paciente criado com sucesso!";
                     return View("Create");
                 }
@@ -53,12 +59,12 @@ namespace ConsultaSystem.MVC.Controllers
 
         public ActionResult Edit(int id)
         {
-            Paciente paciente = _pacienteService.GetById(id);
+            Paciente paciente = _mediator.Send(new GetPacienteById(id)).Result;
             if (paciente == null)
             {
                 return HttpNotFound();
             }
-            PacienteViewModel newPaciente = _pacienteDomainToViewModel.Map<PacienteViewModel>(paciente);
+            PacienteViewModel newPaciente = _mapper.Map<PacienteViewModel>(paciente);
             return View(newPaciente);
         }
 
@@ -68,18 +74,22 @@ namespace ConsultaSystem.MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                Paciente newPaciente = _pacienteViewModelToDomain.Map<Paciente>(paciente);
-                _pacienteService.Update(newPaciente);
-                TempData["Message"] = "Paciente editado com sucesso!";
-                return View("Edit");
+                var result = _mediator.Send(new ExistsCPF(paciente.CPF)).Result;
+                if (!result)
+                {
+                    Paciente newPaciente = _mapper.Map<Paciente>(paciente);
+                    _mediator.Send(new UpdatePaciente(newPaciente));
+                    TempData["Message"] = "Paciente criado com sucesso!";
+                    return View("Create");
+                }
+                ModelState.AddModelError(string.Empty, "O CPF já está em uso.");
             }
             return View(paciente);
         }
 
         public ActionResult Delete(int id)
         {
-            Paciente paciente = _pacienteService.GetById(id);
-            _pacienteService.Remove(paciente);
+            _mediator.Send(new RemovePaciente(id));
             return RedirectToAction("Index");
         }
 

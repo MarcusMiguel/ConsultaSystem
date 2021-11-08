@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsultaSystem.Infra", "Con
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsultaSystem.MVC", "ConsultaSystem.MVC\ConsultaSystem.MVC.csproj", "{919293CD-69C8-4954-B4EB-C3867A58C0A5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsultaSystem.Application", "ConsultaSystem.Application\ConsultaSystem.Application.csproj", "{51D4B0C5-9854-4803-AE5B-7E9CD733A86D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{919293CD-69C8-4954-B4EB-C3867A58C0A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{919293CD-69C8-4954-B4EB-C3867A58C0A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{919293CD-69C8-4954-B4EB-C3867A58C0A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51D4B0C5-9854-4803-AE5B-7E9CD733A86D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51D4B0C5-9854-4803-AE5B-7E9CD733A86D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51D4B0C5-9854-4803-AE5B-7E9CD733A86D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51D4B0C5-9854-4803-AE5B-7E9CD733A86D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -75,17 +75,7 @@
     <Compile Include="Interfaces\Repositories\IGenericRepository.cs" />
     <Compile Include="Interfaces\Repositories\IPacienteRepository.cs" />
     <Compile Include="Interfaces\Repositories\ITipoDeExameRepository.cs" />
-    <Compile Include="Interfaces\Services\IConsultaService.cs" />
-    <Compile Include="Interfaces\Services\IExameService.cs" />
-    <Compile Include="Interfaces\Services\IGenericService.cs" />
-    <Compile Include="Interfaces\Services\IPacienteService.cs" />
-    <Compile Include="Interfaces\Services\ITipoDeExameService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\ConsultaService.cs" />
-    <Compile Include="Services\ExameService.cs" />
-    <Compile Include="Services\GenericService.cs" />
-    <Compile Include="Services\PacienteService.cs" />
-    <Compile Include="Services\TipoDeExameService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

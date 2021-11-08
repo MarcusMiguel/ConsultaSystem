@@ -12,9 +12,9 @@ namespace ConsultaSystem.Infra.Repositories
             var conflict = _db.Consultas.Where(o => o.Horario == horario);
             if (conflict.Count() > 0)
             {
-                return true;
+                return false;
             }
-            return false;
+            return true;
         }
     }
 }

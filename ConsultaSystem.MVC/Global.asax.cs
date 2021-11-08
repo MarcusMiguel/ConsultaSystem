@@ -1,8 +1,9 @@
+using ConsultaSystem.MVC.App_Start;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 
-namespace ConsultaSystem
+namespace ConsultaSystem.MVC
 {
     public class MvcApplication : System.Web.HttpApplication
     {

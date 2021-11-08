@@ -1,25 +1,28 @@
 ﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using AutoMapper;
+using ConsultaSystem.Application.UseCases;
 using ConsultaSystem.Domain.Entities;
-using ConsultaSystem.Domain.Interfaces.Services;
 using ConsultaSystem.MVC.ViewModels;
+using MediatR;
 
 namespace ConsultaSystem.MVC.Controllers
 {
     public class TiposDeExamesController : Controller
     {
-        private IMapper _tiposDeExamesDomainToViewModel = new Mapper(new MapperConfiguration(cfg => cfg.CreateMap<TipoDeExame, TipoDeExameViewModel>()));
-        private IMapper _tiposDeExamesViewModelToDomain = new Mapper(new MapperConfiguration(cfg => cfg.CreateMap<TipoDeExameViewModel, TipoDeExame>()));
 
-        private ITipoDeExameService _tipoDeExameService;
-        public TiposDeExamesController(ITipoDeExameService tipoDeExameService )
+        private IMediator _mediator;
+        private IMapper _mapper;
+        public TiposDeExamesController(IMediator mediator,
+                                    IMapper mapper)
         {
-            _tipoDeExameService = tipoDeExameService;
+            _mediator = mediator;
+            _mapper = mapper;
         }
+
         public ActionResult Index()
         {
-            IEnumerable<TipoDeExameViewModel> tiposDeExames = _tiposDeExamesDomainToViewModel.Map<IEnumerable<TipoDeExame>, IEnumerable<TipoDeExameViewModel>>(_tipoDeExameService.GetAll());
+            var tiposDeExames = _mapper.Map<IEnumerable<TipoDeExame>, IEnumerable<TipoDeExameViewModel>>(_mediator.Send(new GetAllTiposDeExames()).Result);
             return View(tiposDeExames);
         }
 
@@ -34,8 +37,8 @@ namespace ConsultaSystem.MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                TipoDeExame newTipoDeExames = _tiposDeExamesViewModelToDomain.Map<TipoDeExame>(tipoDeExame);
-                _tipoDeExameService.Add(newTipoDeExames);
+                TipoDeExame newTipoDeExames = _mapper.Map<TipoDeExame>(tipoDeExame);
+                _mediator.Send(new AddTipoDeExame(newTipoDeExames));
                 TempData["Message"] = "Tipo de exame criado com sucesso!";
                 return View("Create");
             }
@@ -45,12 +48,12 @@ namespace ConsultaSystem.MVC.Controllers
 
         public ActionResult Edit(int id)
         {
-            TipoDeExame tipoDeExame = _tipoDeExameService.GetById(id);
+            TipoDeExame tipoDeExame = _mediator.Send(new GetTipoDeExameById(id)).Result;
             if (tipoDeExame == null)
             {
                 return HttpNotFound();
             }
-            TipoDeExameViewModel newTipoDeExame = _tiposDeExamesDomainToViewModel.Map<TipoDeExameViewModel>(tipoDeExame);
+            TipoDeExameViewModel newTipoDeExame = _mapper.Map<TipoDeExameViewModel>(tipoDeExame);
             return View(newTipoDeExame);
         }
 
@@ -60,8 +63,8 @@ namespace ConsultaSystem.MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                TipoDeExame newTipoDeExame = _tiposDeExamesViewModelToDomain.Map<TipoDeExame>(tipoDeExame);
-                _tipoDeExameService.Update(newTipoDeExame);
+                TipoDeExame newTipoDeExame = _mapper.Map<TipoDeExame>(tipoDeExame);
+                _mediator.Send(new UpdateTipoDeExame(newTipoDeExame));
                 TempData["Message"] = "Tipo de exame editado com sucesso!";
                 return View("Edit");
             }
@@ -70,8 +73,7 @@ namespace ConsultaSystem.MVC.Controllers
 
         public ActionResult Delete(int id)
         {
-            TipoDeExame tipoDeExame = _tipoDeExameService.GetById(id);
-            _tipoDeExameService.Remove(tipoDeExame);
+            _mediator.Send(new RemoveTipoDeExame(id));
             return RedirectToAction("Index");
         }
 

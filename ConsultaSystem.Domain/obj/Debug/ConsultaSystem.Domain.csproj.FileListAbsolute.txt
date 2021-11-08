@@ -1,5 +1,3 @@
-C:\Users\marcu\source\repos\ConsultaSystem\ConsultaSystem.Domain\obj\Debug\ConsultaSystem.Domain.csprojAssemblyReference.cache
-C:\Users\marcu\source\repos\ConsultaSystem\ConsultaSystem.Domain\obj\Debug\ConsultaSystem.Domain.csproj.CoreCompileInputs.cache
 C:\Users\marcu\source\repos\ConsultaSystem\ConsultaSystem.Domain\bin\Debug\ConsultaSystem.Domain.dll
 C:\Users\marcu\source\repos\ConsultaSystem\ConsultaSystem.Domain\bin\Debug\ConsultaSystem.Domain.pdb
 C:\Users\marcu\source\repos\ConsultaSystem\ConsultaSystem.Domain\bin\Debug\Microsoft.Web.Infrastructure.dll
@@ -21,6 +19,8 @@ C:\Users\marcu\source\repos\ConsultaSystem\ConsultaSystem.Domain\bin\Debug\pt-br
 C:\Users\marcu\source\repos\ConsultaSystem\ConsultaSystem.Domain\bin\Debug\pt-br\System.Web.WebPages.resources.dll
 C:\Users\marcu\source\repos\ConsultaSystem\ConsultaSystem.Domain\bin\Debug\pt-br\System.Web.WebPages.Deployment.resources.dll
 C:\Users\marcu\source\repos\ConsultaSystem\ConsultaSystem.Domain\bin\Debug\pt-br\System.Web.WebPages.Razor.resources.dll
+C:\Users\marcu\source\repos\ConsultaSystem\ConsultaSystem.Domain\obj\Debug\ConsultaSystem.Domain.csproj.CoreCompileInputs.cache
 C:\Users\marcu\source\repos\ConsultaSystem\ConsultaSystem.Domain\obj\Debug\ConsultaSystem.Domain.csproj.CopyComplete
 C:\Users\marcu\source\repos\ConsultaSystem\ConsultaSystem.Domain\obj\Debug\ConsultaSystem.Domain.dll
 C:\Users\marcu\source\repos\ConsultaSystem\ConsultaSystem.Domain\obj\Debug\ConsultaSystem.Domain.pdb
+C:\Users\marcu\source\repos\ConsultaSystem\ConsultaSystem.Domain\obj\Debug\ConsultaSystem.Domain.csprojAssemblyReference.cache

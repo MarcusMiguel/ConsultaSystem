@@ -1,10 +1,9 @@
 ﻿using System.Web.Optimization;
 
-namespace ConsultaSystem
+namespace ConsultaSystem.MVC.App_Start
 {
     public class BundleConfig
     {
-        // Para obter mais informações sobre o agrupamento, visite https://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(

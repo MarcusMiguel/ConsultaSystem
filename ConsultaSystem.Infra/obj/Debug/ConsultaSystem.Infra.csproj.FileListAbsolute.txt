@@ -1,7 +1,3 @@
-C:\Users\marcu\source\repos\ConsultaSystem\ConsultaSystem.Infra\obj\Debug\ConsultaSystem.Infra.csprojAssemblyReference.cache
-C:\Users\marcu\source\repos\ConsultaSystem\ConsultaSystem.Infra\obj\Debug\ConsultaSystem.Migrations.init.resources
-C:\Users\marcu\source\repos\ConsultaSystem\ConsultaSystem.Infra\obj\Debug\ConsultaSystem.Infra.csproj.GenerateResource.cache
-C:\Users\marcu\source\repos\ConsultaSystem\ConsultaSystem.Infra\obj\Debug\ConsultaSystem.Infra.csproj.CoreCompileInputs.cache
 C:\Users\marcu\source\repos\ConsultaSystem\ConsultaSystem.Infra\bin\Debug\ConsultaSystem.Infra.dll.config
 C:\Users\marcu\source\repos\ConsultaSystem\ConsultaSystem.Infra\bin\Debug\ConsultaSystem.Infra.dll
 C:\Users\marcu\source\repos\ConsultaSystem\ConsultaSystem.Infra\bin\Debug\ConsultaSystem.Infra.pdb
@@ -27,6 +23,10 @@ C:\Users\marcu\source\repos\ConsultaSystem\ConsultaSystem.Infra\bin\Debug\pt-br\
 C:\Users\marcu\source\repos\ConsultaSystem\ConsultaSystem.Infra\bin\Debug\pt-br\System.Web.WebPages.Razor.resources.dll
 C:\Users\marcu\source\repos\ConsultaSystem\ConsultaSystem.Infra\bin\Debug\pt-br\System.Web.Razor.resources.dll
 C:\Users\marcu\source\repos\ConsultaSystem\ConsultaSystem.Infra\bin\Debug\pt-br\System.Web.WebPages.Deployment.resources.dll
+C:\Users\marcu\source\repos\ConsultaSystem\ConsultaSystem.Infra\obj\Debug\ConsultaSystem.Infra.csprojAssemblyReference.cache
+C:\Users\marcu\source\repos\ConsultaSystem\ConsultaSystem.Infra\obj\Debug\ConsultaSystem.Migrations.init.resources
+C:\Users\marcu\source\repos\ConsultaSystem\ConsultaSystem.Infra\obj\Debug\ConsultaSystem.Infra.csproj.GenerateResource.cache
+C:\Users\marcu\source\repos\ConsultaSystem\ConsultaSystem.Infra\obj\Debug\ConsultaSystem.Infra.csproj.CoreCompileInputs.cache
 C:\Users\marcu\source\repos\ConsultaSystem\ConsultaSystem.Infra\obj\Debug\ConsultaSystem.Infra.csproj.CopyComplete
 C:\Users\marcu\source\repos\ConsultaSystem\ConsultaSystem.Infra\obj\Debug\ConsultaSystem.Infra.dll
 C:\Users\marcu\source\repos\ConsultaSystem\ConsultaSystem.Infra\obj\Debug\ConsultaSystem.Infra.pdb

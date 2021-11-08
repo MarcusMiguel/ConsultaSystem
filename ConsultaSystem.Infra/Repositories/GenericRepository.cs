@@ -2,6 +2,7 @@
 using ConsultaSystem.Infra.Context;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
 
@@ -28,10 +29,19 @@ namespace ConsultaSystem.Infra.Repositories
             return _db.Set<TEntity>().Find(id);
          }
 
-        public void Remove(TEntity obj)
+        public void Remove(int id)
         {
-            _db.Set<TEntity>().Remove(obj);
+            //_db.Set<TEntity>().Remove(obj);
+            //_db.SaveChanges();
+            var dbSet = _db.Set<TEntity>();
+            TEntity entityToDelete = dbSet.Find(id);
+            if (_db.Entry(entityToDelete).State == EntityState.Detached)
+            {
+                dbSet.Attach(entityToDelete);
+            }
+            dbSet.Remove(entityToDelete);
             _db.SaveChanges();
+
         }
 
         public void Update(TEntity obj)

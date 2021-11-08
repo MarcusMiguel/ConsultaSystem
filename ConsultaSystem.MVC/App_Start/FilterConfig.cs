@@ -1,6 +1,6 @@
 ﻿using System.Web.Mvc;
 
-namespace ConsultaSystem
+namespace ConsultaSystem.MVC.App_Start
 {
     public class FilterConfig
     {

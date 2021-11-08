@@ -9,11 +9,15 @@
 - CRUD de Consultas
 ## Tecnologias
 - .Net MVC
+- MediatR
 - Entity Framework
-- SQLServer
+- AutoMapper
+- Ninject
 - Bootstrap
 - Jquery
 - Toastr
 - SweetAlert
+- SQLServer
+
 
 

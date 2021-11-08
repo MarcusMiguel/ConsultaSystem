@@ -210,3 +210,8 @@ C:\Users\marcu\source\repos\ConsultaSystem\ConsultaSystem.MVC\obj\Debug\Consulta
 C:\Users\marcu\source\repos\ConsultaSystem\ConsultaSystem.MVC\obj\Debug\ConsultaSystem.MVC.csproj.CopyComplete
 C:\Users\marcu\source\repos\ConsultaSystem\ConsultaSystem.MVC\obj\Debug\ConsultaSystem.MVC.dll
 C:\Users\marcu\source\repos\ConsultaSystem\ConsultaSystem.MVC\obj\Debug\ConsultaSystem.MVC.pdb
+C:\Users\marcu\source\repos\ConsultaSystem\ConsultaSystem.MVC\bin\ConsultaSystem.Application.dll
+C:\Users\marcu\source\repos\ConsultaSystem\ConsultaSystem.MVC\bin\MediatR.dll
+C:\Users\marcu\source\repos\ConsultaSystem\ConsultaSystem.MVC\bin\ConsultaSystem.Application.pdb
+C:\Users\marcu\source\repos\ConsultaSystem\ConsultaSystem.MVC\bin\ConsultaSystem.Application.dll.config
+C:\Users\marcu\source\repos\ConsultaSystem\ConsultaSystem.MVC\bin\MediatR.xml
